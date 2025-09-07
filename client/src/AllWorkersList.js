@@ -9,7 +9,7 @@ const AllWorkersList = () => {
 
   const fetchWorkers = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/auth/all-workers');
+      const response = await axios.get('https://doable-ojum.onrender.com/api/auth/all-workers');
       setWorkers(response.data.workers);
       setLoading(false);
     } catch (error) {
