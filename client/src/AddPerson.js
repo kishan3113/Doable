@@ -40,7 +40,7 @@ const AddPerson = () => {
     }
 
     try {
-      await axios.post('http://localhost:3001/persons', data, {
+      await axios.post('https://doable-ojum.onrender.com/persons', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
