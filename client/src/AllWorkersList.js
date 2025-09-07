@@ -22,7 +22,7 @@ const AllWorkersList = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this worker profile? This action cannot be undone.')) {
       try {
-        await axios.delete(`http://localhost:3001/api/auth/all-workers/${id}`);
+        await axios.delete(`https://doable-ojum.onrender.com/api/auth/all-workers/${id}`);
         alert('Worker profile deleted successfully!');
         fetchWorkers();
       } catch (error) {
@@ -58,7 +58,7 @@ const AllWorkersList = () => {
             <div key={worker._id} className="person-card">
               {worker.photo && (
                 <img
-                  src={`http://localhost:3001${worker.photo}`}
+                  src={`https://doable-ojum.onrender.com${worker.photo}`}
                   alt={worker.name}
                   className="person-photo"
                 />
