@@ -45,7 +45,7 @@ const Login = () => {
   const validateForm = () => {
     if (role === "worker") {
       if (!name.trim()) {
-        setError("Please enter your worker name.");
+        setError("enter your name.");
         return false;
       }
     } else {
