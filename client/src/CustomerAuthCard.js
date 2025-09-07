@@ -49,7 +49,7 @@ function CustomerAuthCard() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:3001/api/customers",
+        "https://doable-ojum.onrender.com/api/customers",
         { name, email, password, phone },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -78,7 +78,7 @@ function CustomerAuthCard() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:3001/api/customers/login",
+        "https://doable-ojum.onrender.com/api/customers/login",
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );

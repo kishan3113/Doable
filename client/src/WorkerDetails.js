@@ -13,8 +13,8 @@ const WorkerDashboard = ({ workerName, workerId }) => {
   const fetchWorkerDetails = useCallback(async () => {
     if (workerId) {
       try {
-        const profileResponse = await axios.get(`http://localhost:3001/api/auth/profile/${workerId}`);
-        const bookingsResponse = await axios.get(`http://localhost:3001/api/bookings/worker/${workerId}`);
+        const profileResponse = await axios.get(`https://doable-ojum.onrender.com/api/auth/profile/${workerId}`);
+        const bookingsResponse = await axios.get(`https://doable-ojum.onrender.com/api/bookings/worker/${workerId}`);
 
         if (profileResponse.data.success && bookingsResponse.data.success) {
           setWorkerData(profileResponse.data.worker);
@@ -39,7 +39,7 @@ const WorkerDashboard = ({ workerName, workerId }) => {
   const handleDeleteBooking = async (bookingId) => {
     if (window.confirm('Are you sure you want to delete this booking request?')) {
       try {
-        await axios.delete(`http://localhost:3001/api/bookings/${bookingId}`);
+        await axios.delete(`https://doable-ojum.onrender.com/api/bookings/${bookingId}`);
         alert('Booking request deleted successfully!');
         fetchWorkerDetails(); // Refresh the list
       } catch (error) {
@@ -52,7 +52,7 @@ const WorkerDashboard = ({ workerName, workerId }) => {
   // Optional: handle accept booking if needed
   const handleAcceptBooking = async (bookingId) => {
     try {
-      await axios.put(`http://localhost:3001/api/bookings/${bookingId}/accept`);
+      await axios.put(`https://doable-ojum.onrender.com/api/bookings/${bookingId}/accept`);
       alert('Booking accepted!');
       fetchWorkerDetails();
     } catch (error) {
@@ -77,7 +77,7 @@ const WorkerDashboard = ({ workerName, workerId }) => {
       <div className="worker-profile-card">
         {workerData.photo && (
           <img
-            src={`http://localhost:3001${workerData.photo}`}
+            src={`https://doable-ojum.onrender.com${workerData.photo}`}
             alt={workerData.name}
             className="person-photo-large"
           />

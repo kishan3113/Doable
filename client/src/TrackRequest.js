@@ -22,7 +22,7 @@ const TrackRequest = () => {
     }
 
     try {
-      const response = await axios.get(`http://localhost:3001/api/bookings/track/${trackingId}`);
+      const response = await axios.get(`https://doable-ojum.onrender.com/api/bookings/track/${trackingId}`);
       if (response.data.success) {
         setBookingStatus(response.data.booking.status);
       } else {

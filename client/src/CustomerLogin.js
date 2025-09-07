@@ -10,7 +10,7 @@ const CustomerLogin = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3001/api/customers/login', { email, password });
+      const res = await axios.post('https://doable-ojum.onrender.com', { email, password });
       alert('Login successful!');
       onLogin(res.data.name, res.data._id);
       navigate('/customer-dashboard'); // Redirect to customer dashboard

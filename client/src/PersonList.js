@@ -20,7 +20,7 @@ const PersonList = () => {
 
   const fetchPersons = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/auth/all-workers');
+      const response = await axios.get('https://doable-ojum.onrender.com/api/auth/all-workers');
       setPersons(response.data.workers);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -30,7 +30,7 @@ const PersonList = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this profile?')) {
       try {
-        await axios.delete(`http://localhost:3001/api/auth/all-workers/${id}`);
+        await axios.delete(`https://doable-ojum.onrender.com/api/auth/all-workers/${id}`);
         alert('Profile deleted successfully!');
         fetchPersons();
       } catch (error) {
@@ -135,7 +135,7 @@ const PersonList = () => {
                 <div className="person-card">
                   {person.photo && (
                     <img
-                      src={`http://localhost:3001${person.photo}`}
+                      src={`https://doable-ojum.onrender.com${person.photo}`}
                       alt={person.name}
                       className="person-photo"
                     />

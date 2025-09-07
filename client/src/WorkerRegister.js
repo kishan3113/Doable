@@ -44,7 +44,7 @@ const WorkerRegister = () => {
       formData.append("pincode", pincode.trim());
       if (photo) formData.append("photo", photo); // ✅ attach photo
 
-      const response = await axios.post("http://localhost:3001/api/auth/register", formData, {
+      const response = await axios.post("https://doable-ojum.onrender.com/api/auth/register", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

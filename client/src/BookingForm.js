@@ -21,7 +21,7 @@ const BookingForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/api/bookings', {
+      const response = await axios.post('https://doable-ojum.onrender.com/api/bookings', {
         workerId: id,
         clientName: formData.clientName,
         jobDetails: formData.jobDetails,

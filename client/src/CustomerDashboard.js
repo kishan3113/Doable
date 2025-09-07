@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { parseISO } from "date-fns";
 
-const BASE_URL = "http://localhost:3001"; // centralised base URL
+const BASE_URL = "https://doable-ojum.onrender.com"; // centralised base URL
 const MAX_PHOTOS = 6; // maximum photos customer can attach
 const MAX_PHOTO_MB = 6; // max size per photo
 

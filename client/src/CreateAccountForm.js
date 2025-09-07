@@ -26,7 +26,7 @@ function CreateCustomerAccountForm() {
         return;
       }
 
-      const response = await axios.post('http://localhost:3001/api/customers', formData);
+      const response = await axios.post('https://doable-ojum.onrender.com/api/customers', formData);
       console.log(response.data);
       alert('Customer registered successfully!');
       setFormData({ name: '', email: '', password: '', phone: '' });

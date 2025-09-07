@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, parseISO } from "date-fns";
 
-const BASE_URL = "http://localhost:3001"; // adjust if needed
+const BASE_URL = "https://doable-ojum.onrender.com"; // adjust if needed
 const TERMINAL_STATUSES = ["completed", "cancelled"];
 
 const WorkerDashboard = () => {

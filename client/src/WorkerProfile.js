@@ -14,7 +14,7 @@ const WorkerProfile = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/login', {
+      const response = await axios.post('https://doable-ojum.onrender.com/api/auth/login', {
         name,
         password
       });
@@ -31,7 +31,7 @@ const WorkerProfile = () => {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/register', {
+      const response = await axios.post('https://doable-ojum.onrender.com/api/auth/register', {
         name,
         password,
         mobileNumber

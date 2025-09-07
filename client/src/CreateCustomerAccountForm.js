@@ -15,7 +15,7 @@ const CreateCustomerAccountForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3001/api/customers", formData);
+      const res = await axios.post("https://doable-ojum.onrender.com/api/customers", formData);
       alert("Account created successfully!");
       console.log(res.data);
     } catch (err) {
