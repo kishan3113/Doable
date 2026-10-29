@@ -1,0 +1,30 @@
+[
+  {
+    "file": "plumbing.jpg",
+    "source": "https://www.pexels.com/photo/plumber-repairing-pipe-with-wrench-indoors-32588548/",
+    "photographer": "Bulat843",
+    "license": "https://www.pexels.com/license/",
+    "bytes": 59273
+  },
+  {
+    "file": "carpentry.jpg",
+    "source": "https://www.pexels.com/photo/man-working-in-carpentry-7480721/",
+    "photographer": "cottonbro studio",
+    "license": "https://www.pexels.com/license/",
+    "bytes": 93894
+  },
+  {
+    "file": "gardening.jpg",
+    "source": "https://www.pexels.com/photo/gardener-working-with-flowerbed-13834298/",
+    "photographer": "Anibal Pabon",
+    "license": "https://www.pexels.com/license/",
+    "bytes": 157571
+  },
+  {
+    "file": "cleaning.jpg",
+    "source": "https://www.pexels.com/photo/woman-cleaning-the-house-6195198/",
+    "photographer": "Tima Miroshnichenko",
+    "license": "https://www.pexels.com/license/",
+    "bytes": 73263
+  }
+]

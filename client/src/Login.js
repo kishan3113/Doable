@@ -1,18 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { DEMO_ENABLED, startDemo, stopDemo } from "./demoApi";
+
+import AuthLayout from "./AuthLayout";
+import { Field, Icon } from "./SiteUI";
 
 const API_BASE = "https://doable-ojum.onrender.com";
 
 const Login = () => {
-  const [role, setRole] = useState("worker"); // 'worker' or 'customer'
+  const location = useLocation();
+  const requestedRole = new URLSearchParams(location.search).get("role");
+  const [role, setRole] = useState(requestedRole || "customer"); // 'worker' or 'customer'
   const [name, setName] = useState(""); // worker login uses name
   const [email, setEmail] = useState(""); // customer login uses email
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -20,16 +26,18 @@ const Login = () => {
   const emailRef = useRef(null);
 
   useEffect(() => {
+    stopDemo();
     const saved = localStorage.getItem("hw-login-remember");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed.role) setRole(parsed.role);
+        if (parsed.role && !requestedRole) setRole(parsed.role);
         if (parsed.name) setName(parsed.name);
         if (parsed.email) setEmail(parsed.email);
         setRemember(true);
       } catch (e) {}
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -71,6 +79,7 @@ const Login = () => {
     setError("");
     if (!validateForm()) return;
 
+    stopDemo();
     setLoading(true);
     try {
       if (role === "worker") {
@@ -81,7 +90,10 @@ const Login = () => {
 
         if (res.data?.success) {
           if (remember) {
-            localStorage.setItem("hw-login-remember", JSON.stringify({ role, name }));
+            localStorage.setItem(
+              "hw-login-remember",
+              JSON.stringify({ role, name }),
+            );
           } else {
             localStorage.removeItem("hw-login-remember");
           }
@@ -97,211 +109,180 @@ const Login = () => {
 
         if (res.data?.success) {
           if (remember) {
-            localStorage.setItem("hw-login-remember", JSON.stringify({ role, email }));
+            localStorage.setItem(
+              "hw-login-remember",
+              JSON.stringify({ role, email }),
+            );
           } else {
             localStorage.removeItem("hw-login-remember");
           }
-          navigate("/customer-dashboard", { state: res.data });
+          navigate("/customer-dashboard", {
+            state: {
+              ...res.data,
+              selectedWorker: location.state?.selectedWorker,
+              activeTab: location.state?.selectedWorker
+                ? "bookWorker"
+                : "profile",
+            },
+          });
         } else {
           setError(res.data?.message || "Customer login failed.");
         }
       }
     } catch (err) {
       console.error("Login error:", err?.response?.data || err?.message);
-      setError(err?.response?.data?.message || "Login failed. Check credentials and try again.");
+      setError(
+        err?.response?.data?.message ||
+          "Login failed. Check credentials and try again.",
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const containerStyle = {
-    minHeight: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "linear-gradient(135deg, #2c3e50, #3498db)",
-    fontFamily: "Poppins, sans-serif",
-    padding: 16,
+  const openDemo = (demoRole) => {
+    const account = startDemo(demoRole);
+    navigate(`/${demoRole}-dashboard`, {
+      state: {
+        ...account,
+        demoSelectionReset:
+          demoRole === "customer" &&
+          location.state?.selectedWorker &&
+          location.state.selectedWorker._id !== "000000000000000000000001",
+        ...(demoRole === "customer" &&
+        location.state?.selectedWorker?._id === "000000000000000000000001"
+          ? {
+              selectedWorker: location.state.selectedWorker,
+              activeTab: "bookWorker",
+            }
+          : {}),
+      },
+    });
   };
-
-  const cardStyle = {
-    width: "100%",
-    maxWidth: 460,
-    background: "#fff",
-    borderRadius: 12,
-    padding: 28,
-    boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
-  };
-
-  const roleBtn = (isActive) => ({
-    flex: 1,
-    padding: 12,
-    marginRight: 8,
-    backgroundColor: isActive ? "#3498db" : "#ecf0f1",
-    color: isActive ? "#fff" : "#2c3e50",
-    border: "none",
-    borderRadius: 8,
-    cursor: "pointer",
-    fontWeight: 600,
-  });
-
-  const inputBase = {
-    padding: "12px 14px",
-    borderRadius: 8,
-    border: "1px solid #e6eef8",
-    outline: "none",
-    fontSize: 14,
-    width: "100%",
-    boxSizing: "border-box",
-  };
-
   return (
-    <div style={containerStyle}>
-      <div style={cardStyle} role="region" aria-labelledby="login-heading">
-        <h2 id="login-heading" style={{ textAlign: "center", marginBottom: 18, color: "#2c3e50" }}>
-          {role === "worker" ? "Worker Login" : "Customer Login"}
-        </h2>
-
-        {/* Role Switch */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
+    <AuthLayout worker={role === "worker"}>
+      <span className="eyebrow">WELCOME BACK</span>
+      <h2>Your next chapter starts here.</h2>
+      <p className="subcopy">Log in to your Doable account.</p>
+      <div className="role-switch" aria-label="Account type">
+        {["customer", "worker"].map((r) => (
           <button
-            onClick={() => setRole("worker")}
-            style={roleBtn(role === "worker")}
-            aria-pressed={role === "worker"}
+            key={r}
             type="button"
+            className={role === r ? "active" : ""}
+            aria-pressed={role === r}
+            onClick={() => setRole(r)}
           >
-            Worker
+            {r === "customer" ? "I need a helping hand" : "I’m a professional"}
           </button>
-          <button
-            onClick={() => setRole("customer")}
-            style={{ ...roleBtn(role === "customer"), marginRight: 0 }}
-            aria-pressed={role === "customer"}
-            type="button"
-          >
-            Customer
-          </button>
-        </div>
-
-        {/* Login Form */}
-        <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {role === "worker" ? (
-            <label style={{ display: "block" }}>
-              <div style={{ marginBottom: 6, fontSize: 13, color: "#344055", fontWeight: 600 }}>Worker Name</div>
-              <input
-                ref={nameRef}
-                type="text"
-                placeholder="Enter your worker name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                style={inputBase}
-                disabled={loading}
-                autoComplete="username"
-                required
-              />
-            </label>
-          ) : (
-            <label style={{ display: "block" }}>
-              <div style={{ marginBottom: 6, fontSize: 13, color: "#344055", fontWeight: 600 }}>Customer Email</div>
-              <input
-                ref={emailRef}
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                style={inputBase}
-                disabled={loading}
-                autoComplete="email"
-                required
-              />
-            </label>
-          )}
-
-          <label style={{ display: "block" }}>
-            <div style={{ marginBottom: 6, fontSize: 13, color: "#344055", fontWeight: 600 }}>Password</div>
-            <div style={{ position: "relative" }}>
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                style={{ ...inputBase, paddingRight: 44 }}
-                disabled={loading}
-                autoComplete="current-password"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((s) => !s)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-                style={{
-                  position: "absolute",
-                  right: 8,
-                  top: 6,
-                  bottom: 6,
-                  border: "none",
-                  background: "transparent",
-                  cursor: "pointer",
-                  padding: "6px 8px",
-                  color: "#475569",
-                }}
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
-            </div>
-          </label>
-
-         
-
-          {error && (
-            <div role="alert" style={{ color: "#b91c1c", fontSize: 14, padding: "8px 10px", background: "#fff1f2", borderRadius: 8 }}>
-              {error}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              padding: 12,
-              background: loading ? "#8ec7ea" : "#3498db",
-              color: "#fff",
-              border: "none",
-              borderRadius: 8,
-              fontWeight: 700,
-              cursor: loading ? "not-allowed" : "pointer",
-            }}
-          >
-            {loading ? "Signing in…" : "Login"}
-          </button>
-        </form>
-
-        {/* Register Links — show only for current role */}
-        <div style={{ marginTop: 16, textAlign: "center", fontSize: 14, color: "#475569" }}>
-          {role === "worker" ? (
-            <p>
-              New Worker?{" "}
-              <button
-                onClick={() => navigate("/register-worker")}
-                style={{ background: "none", border: "none", color: "#3498db", cursor: "pointer" }}
-              >
-                Create account
-              </button>
-            </p>
-          ) : (
-            <p>
-              New Customer?{" "}
-              <button
-                onClick={() => navigate("/register-customer")}
-                style={{ background: "none", border: "none", color: "#3498db", cursor: "pointer" }}
-              >
-                Create account
-              </button>
-            </p>
-          )}
-        </div>
+        ))}
       </div>
-    </div>
+      {location.state?.registered && (
+        <p className="notice" style={{ marginBottom: 20 }}>
+          Your account is ready. Log in to get started.
+        </p>
+      )}
+      <form onSubmit={handleLogin} className="form-stack">
+        {role === "worker" ? (
+          <Field label="Worker name">
+            <input
+              ref={nameRef}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              autoComplete="username"
+              placeholder="Your registered name"
+              disabled={loading}
+              required
+            />
+          </Field>
+        ) : (
+          <Field label="Email address">
+            <input
+              ref={emailRef}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              placeholder="you@example.com"
+              disabled={loading}
+              required
+            />
+          </Field>
+        )}
+        <Field label="Password">
+          <div className="password-wrap">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              placeholder="Enter your password"
+              disabled={loading}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+        </Field>
+        <label className="small muted">
+          <input
+            type="checkbox"
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
+          />{" "}
+          Remember my {role === "worker" ? "name" : "email"}
+        </label>
+        {error && (
+          <p role="alert" className="notice notice-error">
+            {error}
+          </p>
+        )}
+        <button className="button" disabled={loading}>
+          {loading ? "Signing in…" : "Log in"} <Icon />
+        </button>
+      </form>
+      <p className="auth-footer">
+        New to Doable?{" "}
+        <Link
+          to={role === "worker" ? "/register-worker" : "/register-customer"}
+          state={
+            role === "customer"
+              ? { selectedWorker: location.state?.selectedWorker }
+              : undefined
+          }
+        >
+          Create an account
+        </Link>
+      </p>
+      {DEMO_ENABLED && (
+        <div className="demo-box">
+          <h4>Take a look around</h4>
+          <p>
+            Try a local demo. No password needed. Sample changes stay in this
+            browser.
+          </p>
+          <div className="demo-buttons">
+            <button
+              className="button button-outline"
+              onClick={() => openDemo("customer")}
+            >
+              Try customer demo ↗
+            </button>
+            <button
+              className="button button-outline"
+              onClick={() => openDemo("worker")}
+            >
+              Try worker demo ↗
+            </button>
+          </div>
+        </div>
+      )}
+    </AuthLayout>
   );
 };
-
 export default Login;
