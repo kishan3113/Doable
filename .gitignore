@@ -2,3 +2,13 @@
 client/.env
 server/.env
 node_modules
+
+# Local research, reports, and visual QA evidence
+/design-reference/
+/design-review/
+/ui-references/
+/ui-screenshots/
+/FEATURE_REPORT.md
+/PROJECT_ANALYSIS.md
+/UI_RESEARCH.md
+/WEBSITE_REDESIGN.md

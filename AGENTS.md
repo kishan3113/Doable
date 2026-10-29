@@ -22,10 +22,12 @@ From the repository root:
 Use two-space indentation, semicolons, and the surrounding file's quote style. Frontend files use ES module imports and React function components; backend files use CommonJS. Name components and their files in PascalCase, such as `WorkerDashboard.js`; use camelCase for functions and variables. Preserve `.js`/`.jsx` conventions. ESLint uses `react-app` and `react-app/jest` through Create React App; no separate lint script or formatter is configured.
 
 ## Testing Guidelines
-Use Jest and React Testing Library; name tests `*.test.js` alongside source files. Wrap routed components in an appropriate router and mock API requests. The existing `App.test.js` still asserts the starter “learn react” text and needs updating for current routes. No coverage threshold exists. Backend `npm test` is a failing placeholder; document manual API checks for backend changes.
+Use Jest and React Testing Library; name tests `*.test.js` alongside source files. Wrap routed components in an appropriate router and mock API requests. `App.test.js` covers search, account handoffs, booking feedback, status updates, and demo limitations. No coverage threshold exists. Backend `npm test` is a failing placeholder; document manual API checks for backend changes.
 
 ## Commit & Pull Request Guidelines
 History uses imperative subjects like `Update Login.js`; no prefix convention is enforced. Describe the changed behavior in commits. PRs should explain purpose, affected flows, validation results, and related issues. Include UI screenshots and relevant configuration or migration notes.
 
 ## Security & Configuration
 Keep credentials in ignored `.env` files. Client API URLs currently target a deployed Render service; point relevant URLs to the local API before testing writes. Use a development database and back it up before running booking migrations. Avoid committing new personal uploads or secrets.
+
+Keep local research reports and screenshot directories out of commits; their paths are listed in the root `.gitignore`. Commit required application assets and their license provenance.
