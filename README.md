@@ -41,7 +41,6 @@ Find a professional → Describe the job → Request a date
 - [Project layout](#project-layout)
 - [Development](#development)
 - [Status and limitations](#status-and-limitations)
-- [Contributing](#contributing)
 
 ## Why Doable
 
@@ -151,7 +150,3 @@ Doable is **in development**. The UI has been reviewed, but production readiness
 - The main booking flow requests a date; time-slot scheduling is not integrated into the active interface.
 - Payments, pricing, reviews, provider verification, chat, notifications, and customer rescheduling/cancellation are not implemented.
 - Discuss service scope, price, and payment directly with the professional.
-
-## Contributing
-
-Open an [issue](https://github.com/kishan3113/Doable/issues) for bugs or proposed changes. Pull requests should explain the affected flow, include relevant UI screenshots, and list validation performed. Keep secrets, personal uploads, generated builds, and local research artifacts out of commits.
