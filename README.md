@@ -25,11 +25,19 @@
 
 ```mermaid
 flowchart TD
-    A[Choose a service and pincode] --> B[Find a professional]
-    B --> C[Describe the job and request a date]
-    C --> D[Pending]
-    D --> E[Confirmed]
-    E --> F[Completed]
+    subgraph booking[" "]
+        direction LR
+        A[Choose a service and pincode] --> B[Find a professional]
+        B --> C[Describe the job and request a date]
+    end
+    subgraph progress[" "]
+        direction LR
+        D[Pending] --> E[Confirmed] --> F[Completed]
+    end
+    booking --> progress
+
+    style booking fill:transparent,stroke:transparent;
+    style progress fill:transparent,stroke:transparent;
 
     classDef step fill:#171a1b,stroke:#303536,color:#f2f5f3;
     classDef status fill:#123b2d,stroke:#22c997,color:#f2f5f3;
