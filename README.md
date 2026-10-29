@@ -23,12 +23,20 @@
 
 **Doable connects customers with local service professionals and keeps job requests in one place.** Find a professional by service and pincode, describe the work, request a date, and follow its status. Professionals manage their profiles, incoming requests, and unavailable dates.
 
-```text
-Choose a service + pincode
-          ↓
-Find a professional → Describe the job → Request a date
-                                              ↓
-                              Pending → Confirmed → Completed
+```mermaid
+flowchart TD
+    A[Choose a service and pincode] --> B[Find a professional]
+    B --> C[Describe the job and request a date]
+    C --> D[Pending]
+    D --> E[Confirmed]
+    E --> F[Completed]
+
+    classDef step fill:#171a1b,stroke:#303536,color:#f2f5f3;
+    classDef status fill:#123b2d,stroke:#22c997,color:#f2f5f3;
+    classDef done fill:#22c997,stroke:#22c997,color:#071711;
+    class A,B,C step;
+    class D,E status;
+    class F done;
 ```
 
 ## Contents
