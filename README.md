@@ -1,8 +1,6 @@
 <p align="center">
-  <a href="#doable"><img src="client/public/doable-logo.svg" width="280" alt="Doable tick logo and name"></a>
+  <img src="client/public/doable-logo.svg" width="280" alt="Doable tick logo and name">
 </p>
-
-<h1 align="center">Doable</h1>
 
 <p align="center">Good help. Close to home. Consider it doable.</p>
 
